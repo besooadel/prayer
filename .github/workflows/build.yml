@@ -1,0 +1,33 @@
+name: Build APK
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - name: Create Android scaffold
+        run: |
+          flutter create --platforms=android --project-name prayer_app prayer_app
+          rm -rf prayer_app/test
+          cp pubspec.yaml prayer_app/pubspec.yaml
+          cp -r lib/. prayer_app/lib/
+          python3 tool/patch_android.py
+      - name: Build
+        working-directory: prayer_app
+        run: |
+          flutter pub get
+          flutter build apk --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: prayer-apk
+          path: prayer_app/build/app/outputs/flutter-apk/app-release.apk

@@ -1,0 +1,19 @@
+name: prayer_app
+description: تطبيق تنبيهات مواقيت الصلاة
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  adhan: ^2.0.0+1
+  flutter_local_notifications: ^19.4.0
+  geolocator: ^13.0.2
+  shared_preferences: ^2.3.0
+  timezone: ^0.10.0
+
+flutter:
+  uses-material-design: true
